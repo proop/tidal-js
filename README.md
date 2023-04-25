@@ -72,7 +72,7 @@ const userData = await client.getUserData();
 client.getUserData();
 ```
 #### Returns
-```json
+```
 {
   id: 1111111,
   username: 'Username',
@@ -99,7 +99,7 @@ client.getUserData();
 client.getUserSubscription();
 ```
 #### Returns
-```json
+```
 {
   startDate: '2023-04-06T21:11:43.964+0000',
   validUntil: '2023-05-06T21:11:41.973+0000',
@@ -118,7 +118,7 @@ client.getUserSubscription();
 client.getUserProfile();
 ```
 #### Returns
-```json
+```
 {
   userId: 1111111,
   name: 'Jack',
@@ -135,7 +135,7 @@ client.getUserProfile();
 client.getUserFollowers();
 ```
 #### Returns
-```json
+```
 {
   items: [
     {
@@ -155,7 +155,7 @@ client.getUserFollowers();
 client.getUserFollowing();
 ```
 #### Returns 
-```json
+```
 {
   items: [
     {
@@ -181,7 +181,7 @@ client.getUserPlaylists({
 });
 ```
 #### Returns
-```json
+```
 {
   lastModifiedAt: '2023-04-25T06:49:55.648+0000',
   items: [
@@ -220,7 +220,7 @@ client.getUserFavorites(FavoriteType.TRACKS, {
 client.getUserFavoritesLastUpdated();
 ```
 #### Returns
-```json
+```
 {
   updatedFavoriteArtists: '2023-04-06T21:14:12.661+0000',
   updatedFavoriteTracks: '2023-04-09T03:07:27.902+0000',
@@ -237,7 +237,7 @@ client.getUserFavoritesLastUpdated();
 client.getPlaylistInfo(playlistId);
 ```
 #### Returns
-```json
+```
 {
   uuid: '2b419df9-09d1-459e-9f67-903a8b21d722',
   title: 'BlahPlaylist',
@@ -269,7 +269,7 @@ client.getPlaylistTracks(playlistId, {
 });
 ```
 #### Returns
-```json
+```
 {
   limit: 100,
   offset: 0,
@@ -291,7 +291,7 @@ client.getPlaylistTracks(playlistId, {
 client.getTrackInfo(trackId);
 ```
 #### Returns
-```json
+```
 {
   id: 220183218,
   title: 'What Happened To Virgil (feat. Gunna)',
@@ -357,7 +357,7 @@ client.createPlaylist({
 });
 ```
 #### Returns
-```json
+```
 {
   trn: 'trn:playlist:faae778f-a99d-4050-bd37-355d8a0239b7',
   itemType: 'PLAYLIST',
@@ -405,7 +405,7 @@ const options = {
 client.addTracksToPlaylist(playlistId, trackIds, options);
 ```
 #### Returns
-```json
+```
 { lastUpdated: 1682409788836, addedItemIds: [ 220183218 ] }
 ```
 ---
@@ -422,7 +422,7 @@ const queryOptions = {
 }
 ```
 #### Returns
-```json
+```
 {
   artists: { limit: 50, offset: 0, totalNumberOfItems: 0, items: [] },
   albums: { limit: 50, offset: 0, totalNumberOfItems: 0, items: [] },
