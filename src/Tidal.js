@@ -114,6 +114,20 @@ class Tidal {
         }
     }
 
+    async _delete(url, data) {
+        let res;
+
+        try {
+            res = await axios.delete(url, data, this._reqOptions);
+
+            return; // res.data;
+        } catch(e) {
+            console.log(res, e);
+            throw new TidalRequestError(res.data.userMessage, res.status, res.data.subStatus);
+        }
+    }
+
+
     /**
      * Add data that Tidal requires for some requests.
      * @param data {Object}
@@ -401,6 +415,84 @@ class Tidal {
 
         return res;
     }
+
+    /**
+     * Add tracks to a playlist.
+     * @param trackIds {String[]} - The ids of the tracks to add
+     * @param options {Object?} - Options for the request
+     * @param options.onArtifactNotFound {string?} - What to do if a track is not found (FAIL, KEEP, REPLACE) - default fail
+     * @param options.onDupes {string?} - What to do if a track is already in the playlist (FAIL, ADD) - default fail
+     * @return {Promise<void>}
+     */
+    async addTracksToFavorites(trackIds, options) {
+        if(!trackIds) {
+            throw new MissingParametersError("You must provide a trackIds");
+        }
+
+        if(trackIds.length > 50) {
+            throw new TooManyTracksError("You can only add 50 tracks at a time.");
+        }
+
+        options = {
+            onArtifactNotFound: "FAIL",
+            onDupes: "FAIL",
+            ...options
+        };
+
+        this._reqOptions.headers["If-None-Match"] = "*";
+
+        const data = this._addData({
+            trackIds: trackIds.join(","),
+            ...options
+        });
+        const url = this._buildUrl(this._baseUriv1, `/users/${this._options.userId}/favorites/tracks`);
+
+        const res = this._post(url, data);
+
+        this._reqOptions.headers["If-None-Match"] = undefined;
+
+        return res;
+    }
+
+    /**
+     * Remove tracks from the favorites playlist
+     * @param trackId {String} - The id of the tracks to remove
+     * @param options {Object?} - Options for the request
+     * @param options.onArtifactNotFound {string?} - What to do if a track is not found (FAIL, KEEP, REPLACE) - default fail
+     * @param options.onDupes {string?} - What to do if a track is already in the playlist (FAIL, ADD) - default fail
+     * @return {Promise<void>}
+     */
+    /* TODO: Remove doesn't work for some reason. Need to figure out. (error: missing session)
+    async removeTracksOfFavorites(trackId, options) {
+        if(!trackId) {
+            throw new MissingParametersError("You must provide a trackIds");
+        }
+
+        // if(trackIds.length > 50) {
+        //     throw new TooManyTracksError("You can only remove 50 tracks at a time.");
+        // }
+
+        options = {
+            onArtifactNotFound: "FAIL",
+            onDupes: "FAIL",
+            ...options
+        };
+
+        this._reqOptions.headers["If-None-Match"] = "*";
+
+        const data = this._addData({
+            // trackIds: trackIds.join(","),
+            ...options
+        });
+        const url = this._buildUrl(this._baseUriv1, `/users/${this._options.userId}/favorites/tracks/${trackId}`);
+
+        const res = this._delete(url, data);
+
+        this._reqOptions.headers["If-None-Match"] = undefined;
+
+        return res;
+    }
+    */
 
     /**
      * Search for tracks, albums, artists, playlists, and videos.
